@@ -1,0 +1,6 @@
+Sitegeist:
+  Monocle:
+    propsCollectionFactoryImplementation: >
+      Sitegeist\Monocle\PropTypes\PropsCollectionFactory
+    PropTypes:
+      fusionContextName: 'PropTypes'

@@ -1,0 +1,26 @@
+{
+    "name": "sitegeist/monocle-proptypes",
+    "description": "An addon for Sitegeist.Monocle that generates a rich prop editor configuration from PackageFactory.AtomicFusion.PropTypes",
+    "type": "neos-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Wilhelm Behncke",
+            "email": "behncke@sitegeist.de"
+        }
+    ],
+    "require": {
+        "sitegeist/monocle": "*",
+        "packagefactory/atomicfusion-proptypes": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sitegeist\\Monocle\\PropTypes\\": "Classes"
+        }
+    },
+    "extra": {
+        "neos": {
+            "package-key": "Sitegeist.Monocle.PropTypes"
+        }
+    }
+}
