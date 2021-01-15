@@ -6,6 +6,18 @@
 
 This package is still in early development.
 
+## Installation
+
+```
+composer require sitegeist/monocle-proptypes
+```
+
+## Prop Editors
+
+| PropType | Editor |
+|-|-|
+| `PropTypes.anyOf` | SelecBox (with options that match the arguments of `anyOf`) |
+
 ## Contribution
 
 We will gladly accept contributions. Please send us pull requests.

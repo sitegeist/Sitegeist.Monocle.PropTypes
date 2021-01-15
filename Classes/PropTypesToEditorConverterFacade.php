@@ -28,16 +28,6 @@ final class PropTypesToEditorConverterFacade implements ProtectedContextAwareInt
     protected $editorFactory;
 
     /**
-     * @return null|EditorContainer
-     */
-    public function string(): ?EditorContainer
-    {
-        return new EditorContainer(
-            $this->editorFactory->text()
-        );
-    }
-
-    /**
      * @param array $allowedValues
      * @return null|EditorContainer
      */
@@ -47,14 +37,17 @@ final class PropTypesToEditorConverterFacade implements ProtectedContextAwareInt
 
         foreach ($allowedValues as $allowedValue) {
             if (is_string($allowedValue) || is_int($allowedValue) || is_float($allowedValue)) {
-                $options[(string) $allowedValue] = $allowedValue;
+                $options[(string) $allowedValue] = [
+                    'label' => (string) $allowedValue,
+                    'value' => $allowedValue
+                ];
             }
         }
 
         if (count($options)) {
             return new EditorContainer(
                 $this->editorFactory->selectBox([
-                    'options' => $options
+                    'options' => array_values($options)
                 ])
             );
         } else {

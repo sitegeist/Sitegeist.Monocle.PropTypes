@@ -64,7 +64,7 @@ final class PropsCollectionFactory implements Props\PropsCollectionFactoryInterf
                     $editor = $propTypesToEditorDictionary[(string) $propName]
                         ->getEditor();
                 } else {
-                    $editor = $this->editorFactory->forPropValue($propValue);
+                    $editor = $this->editorFactory->for($prototype, $propName);
                 }
 
                 if ($editor !== null) {
