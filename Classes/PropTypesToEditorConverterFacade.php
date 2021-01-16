@@ -45,10 +45,13 @@ final class PropTypesToEditorConverterFacade implements ProtectedContextAwareInt
         }
 
         if (count($options)) {
+            $options = array_values($options);
+
             return new EditorContainer(
                 $this->editorFactory->selectBox([
-                    'options' => array_values($options)
-                ])
+                    'options' => $options
+                ]),
+                Props\PropValue::fromAny($options[0])
             );
         } else {
             return null;

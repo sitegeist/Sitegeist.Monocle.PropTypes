@@ -27,11 +27,19 @@ final class EditorContainer implements ProtectedContextAwareInterface
     private $editor;
 
     /**
+     * @var Props\PropValue
+     */
+    private $defaultValue;
+
+    /**
      * @param Props\EditorInterface $editor
      */
-    public function __construct(Props\EditorInterface $editor)
-    {
+    public function __construct(
+        Props\EditorInterface $editor,
+        Props\PropValue $defaultValue
+    ) {
         $this->editor = $editor;
+        $this->defaultValue = $defaultValue;
     }
 
     /**
@@ -40,6 +48,14 @@ final class EditorContainer implements ProtectedContextAwareInterface
     public function getEditor(): Props\EditorInterface
     {
         return $this->editor;
+    }
+
+    /**
+     * @return Props\PropValue
+     */
+    public function getDefaultValue(): Props\PropValue
+    {
+        return $this->defaultValue;
     }
 
     /**
