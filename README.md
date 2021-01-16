@@ -2,6 +2,18 @@
 
 > An addon for Sitegeist.Monocle that generates a rich prop editor configuration from PackageFactory.AtomicFusion.PropTypes
 
+<p align="center">
+
+![ScreenShot of @propTypes configuration in Fusion](./prop-types.png)
+
+:arrow_down:
+:arrow_down:
+:arrow_down:
+
+![ScreenCast Sitegeist.Monocle with rich prop editor configuration](./monocle.gif)
+
+</p>
+
 ## !NOTHING TO SEE HERE YET!
 
 This package is still in early development.
