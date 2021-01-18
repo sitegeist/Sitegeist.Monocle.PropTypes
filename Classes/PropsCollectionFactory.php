@@ -56,7 +56,10 @@ final class PropsCollectionFactory implements Props\PropsCollectionFactoryInterf
                 ]
             );
 
+        $alreadyProcessedPropNames = [];
         foreach (Props\PropName::fromPrototype($prototype) as $propName) {
+            $alreadyProcessedPropNames[] = (string) $propName;
+
             if ($propValue = Props\PropValue::of($prototype, $propName)) {
                 $editor = null;
 
@@ -72,6 +75,23 @@ final class PropsCollectionFactory implements Props\PropsCollectionFactoryInterf
                         new Props\Prop($propName, $propValue, $editor)
                     );
                 }
+            }
+        }
+
+        foreach (array_diff(
+            array_keys($propTypesToEditorDictionary),
+            $alreadyProcessedPropNames
+        ) as $propNameAsString) {
+            $propName = Props\PropName::fromString($propNameAsString);
+            $editor = $propTypesToEditorDictionary[(string) $propName]
+                    ->getEditor();
+            $propValue = $propTypesToEditorDictionary[(string) $propName]
+                    ->getDefaultValue();
+
+            if ($editor !== null) {
+                $propsCollectionBuilder->addProp(
+                    new Props\Prop($propName, $propValue, $editor)
+                );
             }
         }
 
