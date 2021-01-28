@@ -59,6 +59,51 @@ final class PropTypesToEditorConverterFacade implements ProtectedContextAwareInt
     }
 
     /**
+     * @param array $allowedValues
+     * @return EditorContainer
+     */
+    public function getBoolean(): EditorContainer
+    {
+        return new EditorContainer(
+            $this->editorFactory->checkbox(),
+            Props\PropValue::fromAny(false)
+        );
+    }
+
+    /**
+     * @return EditorContainer
+     */
+    public function getString(): EditorContainer
+    {
+        return new EditorContainer(
+            $this->editorFactory->text(),
+            Props\PropValue::fromAny("")
+        );
+    }
+
+    /**
+     * @return EditorContainer
+     */
+    public function getInteger(): EditorContainer
+    {
+        return new EditorContainer(
+            $this->editorFactory->text(),
+            Props\PropValue::fromAny("")
+        );
+    }
+
+    /**
+     * @return EditorContainer
+     */
+    public function getFloat(): EditorContainer
+    {
+        return new EditorContainer(
+            $this->editorFactory->text(),
+            Props\PropValue::fromAny("")
+        );
+    }
+
+    /**
      * @param string $methodName
      * @param array<mixed> $arguments
      * @return null
