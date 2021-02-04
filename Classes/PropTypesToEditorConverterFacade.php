@@ -34,8 +34,21 @@ final class PropTypesToEditorConverterFacade implements ProtectedContextAwareInt
     public function oneOf(array $allowedValues): ?EditorContainer
     {
         $options = [];
+        $type = null;
 
         foreach ($allowedValues as $allowedValue) {
+            if ($type === null && is_string($allowedValue)) {
+                $type = 'string';
+            }
+
+            if ($type === null && is_int($allowedValue)) {
+                $type = 'integer';
+            }
+
+            if (($type === null || $type === 'integer') && is_float($allowedValue)) {
+                $type = 'float';
+            }
+
             if (is_string($allowedValue) || is_int($allowedValue) || is_float($allowedValue)) {
                 $options[(string) $allowedValue] = [
                     'label' => (string) $allowedValue,
@@ -44,12 +57,13 @@ final class PropTypesToEditorConverterFacade implements ProtectedContextAwareInt
             }
         }
 
-        if (count($options)) {
+        if ($type !== null) {
             $options = array_values($options);
 
             return new EditorContainer(
                 $this->editorFactory->selectBox([
-                    'options' => $options
+                    'options' => $options,
+                    'castValueTo' => $type
                 ]),
                 Props\PropValue::fromAny($options[0])
             );
