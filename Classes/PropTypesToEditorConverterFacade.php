@@ -87,7 +87,7 @@ final class PropTypesToEditorConverterFacade implements ProtectedContextAwareInt
     public function getInteger(): EditorContainer
     {
         return new EditorContainer(
-            $this->editorFactory->text(),
+            $this->editorFactory->number('integer'),
             Props\PropValue::fromAny("")
         );
     }
@@ -98,7 +98,7 @@ final class PropTypesToEditorConverterFacade implements ProtectedContextAwareInt
     public function getFloat(): EditorContainer
     {
         return new EditorContainer(
-            $this->editorFactory->text(),
+            $this->editorFactory->number('float'),
             Props\PropValue::fromAny("")
         );
     }
