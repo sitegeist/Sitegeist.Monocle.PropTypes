@@ -35,6 +35,7 @@ composer require sitegeist/monocle-proptypes
 | `PropTypes.integer` | Text, but cast to `integer` |
 | `PropTypes.float` | Text, but cast to `float` |
 | `PropTypes.oneOf` | SelecBox (with options that match the arguments of `oneOf`) |
+| `PropTypes.anyOf` | Provides the editor for the first PropType within its arguments  |
 
 ## Configuration
 
