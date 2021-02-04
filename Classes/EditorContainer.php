@@ -59,6 +59,20 @@ final class EditorContainer implements ProtectedContextAwareInterface
     }
 
     /**
+     * Catch all calls to PropTypes.[propTypeName](...).isRequired and forward
+     * this editor container instead
+     *
+     * @return self
+     */
+    public function getIsRequired(): self
+    {
+        return $this;
+    }
+
+    /**
+     * Catch all other subsequent chain-calls and forward this editor container
+     * instead
+     *
      * @param string $methodName
      * @param array<mixed> $arguments
      * @return self
