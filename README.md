@@ -30,6 +30,10 @@ composer require sitegeist/monocle-proptypes
 
 | PropType | Editor |
 |-|-|
+| `PropTypes.boolean` | CheckBox |
+| `PropTypes.string` | Text |
+| `PropTypes.integer` | Text, but cast to `integer` |
+| `PropTypes.float` | Text, but cast to `float` |
 | `PropTypes.oneOf` | SelecBox (with options that match the arguments of `oneOf`) |
 
 ## Configuration
