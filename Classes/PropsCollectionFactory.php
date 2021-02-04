@@ -70,6 +70,7 @@ final class PropsCollectionFactory implements Props\PropsCollectionFactoryInterf
                     $editor = $this->editorFactory->for($prototype, $propName);
                 }
 
+
                 if ($editor !== null) {
                     $propsCollectionBuilder->addProp(
                         new Props\Prop($propName, $propValue, $editor)
@@ -83,15 +84,18 @@ final class PropsCollectionFactory implements Props\PropsCollectionFactoryInterf
             $alreadyProcessedPropNames
         ) as $propNameAsString) {
             $propName = Props\PropName::fromString($propNameAsString);
-            $editor = $propTypesToEditorDictionary[(string) $propName]
-                    ->getEditor();
-            $propValue = $propTypesToEditorDictionary[(string) $propName]
-                    ->getDefaultValue();
 
-            if ($editor !== null) {
-                $propsCollectionBuilder->addProp(
-                    new Props\Prop($propName, $propValue, $editor)
-                );
+            if (isset($propTypesToEditorDictionary[(string) $propName])) {
+                $editor = $propTypesToEditorDictionary[(string) $propName]
+                        ->getEditor();
+                $propValue = $propTypesToEditorDictionary[(string) $propName]
+                        ->getDefaultValue();
+
+                if ($editor !== null) {
+                    $propsCollectionBuilder->addProp(
+                        new Props\Prop($propName, $propValue, $editor)
+                    );
+                }
             }
         }
 
