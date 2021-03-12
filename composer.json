@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "sitegeist/monocle": "*",
+        "sitegeist/monocle": "~7.3 || dev-master",
         "packagefactory/atomicfusion-proptypes": "*"
     },
     "autoload": {
