@@ -14,11 +14,14 @@
 
 </p>
 
-## !NOTHING TO SEE HERE YET!
-
-This package is still in early development.
-
 Sitegeist.Monocle.PropTypes is a zero-configuration addon for [Sitegeist.Monocle](https://github.com/sitegeist/Sitegeist.Monocle) that scans your [`@propTypes`](https://github.com/PackageFactory/atomic-fusion-proptypes) annotation and provides the Monocle UI with a corresponding prop editor configuration.
+
+### Authors & Sponsors
+
+* Wilhelm Behncke - behncke@sitegeist.de
+
+*The development and the public-releases of this package was generously sponsored
+by our customer https://www.cornelsen.de and our employer https://www.sitegeist.de.*
 
 ## Installation
 
