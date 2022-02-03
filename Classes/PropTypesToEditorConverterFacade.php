@@ -73,11 +73,13 @@ final class PropTypesToEditorConverterFacade implements ProtectedContextAwareInt
     }
 
     /**
-     * @param EditorContainer ...$editorContainers
+     * @param null|EditorContainer ...$editorContainers
      * @return null|EditorContainer
      */
-    public function anyOf(EditorContainer ...$editorContainers): ?EditorContainer
+    public function anyOf(?EditorContainer ...$editorContainers): ?EditorContainer
     {
+        $editorContainers = array_filter($editorContainers);
+
         if (isset($editorContainers[0])) {
             return $editorContainers[0];
         }
