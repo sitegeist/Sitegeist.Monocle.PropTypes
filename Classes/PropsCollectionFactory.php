@@ -13,8 +13,11 @@ namespace Sitegeist\Monocle\PropTypes;
  */
 
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Validation\Validator\ValidatorInterface;
 use Sitegeist\Monocle\Domain\Fusion;
 use Sitegeist\Monocle\Domain\PrototypeDetails\Props;
+use Sitegeist\Monocle\Domain\PrototypeDetails\Props\EditorFactory as MonocleEditorFactory;
+use Sitegeist\Monocle\PropTypes\Props\ValidatorEditorFactory;
 
 /**
  * @Flow\Scope("singleton")
@@ -22,56 +25,39 @@ use Sitegeist\Monocle\Domain\PrototypeDetails\Props;
 final class PropsCollectionFactory implements Props\PropsCollectionFactoryInterface
 {
     /**
-     * @Flow\InjectConfiguration(path="fusionContextName")
-     * @var string
+     * @Flow\Inject
+     * @var MonocleEditorFactory
      */
-    protected $fusionContextName;
-
-    /**
-     * @Flow\Inject(lazy=false)
-     * @var PropTypesToEditorConverterFacade
-     */
-    protected $propTypesToEditorConverterFacade;
+    protected $monocleEditorFactory;
 
     /**
      * @Flow\Inject
-     * @var Props\EditorFactory
+     * @var ValidatorEditorFactory
      */
-    protected $editorFactory;
+    protected $validatorEditorFactory;
 
     /**
      * @param Fusion\Prototype $fusionPrototypeAst
      * @return Props\PropsCollectionInterface
      */
-    public function fromPrototypeForPrototypeDetails(
-        Fusion\Prototype $prototype
-    ): Props\PropsCollectionInterface {
+    public function fromPrototypeForPrototypeDetails(Fusion\Prototype $prototype): Props\PropsCollectionInterface
+    {
         $propsCollectionBuilder = new Props\PropsCollectionBuilder();
-        $propTypesToEditorDictionary = $prototype
+        $propTypesDictionary = $prototype
             ->evaluate(
-                '/__meta/propTypes<Neos.Fusion:DataStructure>',
-                [
-                    $this->fusionContextName =>
-                        $this->propTypesToEditorConverterFacade
-                ]
+                '/__meta/propTypes<Neos.Fusion:DataStructure>'
             );
 
         $alreadyProcessedPropNames = [];
-        foreach (Props\PropName::fromPrototype($prototype) as $propName) {
-            $alreadyProcessedPropNames[] = (string) $propName;
 
-            if ($propValue = Props\PropValue::of($prototype, $propName)) {
-                $editor = null;
-
-                if (isset($propTypesToEditorDictionary[(string) $propName])) {
-                    $editor = $propTypesToEditorDictionary[(string) $propName]
-                        ->getEditor();
-                } else {
-                    $editor = $this->editorFactory->for($prototype, $propName);
-                }
-
-
+        // iterate over propTypes and create editors
+        foreach ($propTypesDictionary as $key => $propTypeValidator) {
+            $propName = Props\PropName::fromString($key);
+            if ($propTypeValidator instanceof ValidatorInterface) {
+                $editor = $this->validatorEditorFactory->forValidator($propTypeValidator);
+                $propValue = Props\PropValue::of($prototype, $propName) ?: Props\PropValue::fromAny("");
                 if ($editor !== null) {
+                    $alreadyProcessedPropNames[] = (string) $propName;
                     $propsCollectionBuilder->addProp(
                         new Props\Prop($propName, $propValue, $editor)
                     );
@@ -79,18 +65,13 @@ final class PropsCollectionFactory implements Props\PropsCollectionFactoryInterf
             }
         }
 
-        foreach (array_diff(
-            array_keys($propTypesToEditorDictionary),
-            $alreadyProcessedPropNames
-        ) as $propNameAsString) {
-            $propName = Props\PropName::fromString($propNameAsString);
-
-            if (isset($propTypesToEditorDictionary[(string) $propName])) {
-                $editor = $propTypesToEditorDictionary[(string) $propName]
-                        ->getEditor();
-                $propValue = $propTypesToEditorDictionary[(string) $propName]
-                        ->getDefaultValue();
-
+        // fallback to default editor factory for yet unhandled props
+        foreach (Props\PropName::fromPrototype($prototype) as $propName) {
+            if (in_array((string) $propName, $alreadyProcessedPropNames)) {
+                continue;
+            }
+            if ($propValue = Props\PropValue::of($prototype, $propName)) {
+                $editor = $this->monocleEditorFactory->for($prototype, $propName);
                 if ($editor !== null) {
                     $propsCollectionBuilder->addProp(
                         new Props\Prop($propName, $propValue, $editor)
